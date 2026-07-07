@@ -8,16 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#14213D;
-    --paper:#F6F4EE;
+    --ink:#44534C;
+    --paper:#F3F4F1;
     --paper-raised:#FFFFFF;
-    --teal:#3A6B62;
-    --teal-dim:#E4EDEB;
-    --amber:#C97B2E;
-    --amber-dim:#FBEEE0;
-    --line:#DAD5C8;
-    --text:#232323;
-    --text-mute:#6B6B63;
+    --teal:#6B9A85;
+    --teal-dim:#E6EEE8;
+    --amber:#B6875C;
+    --amber-dim:#F2E9DE;
+    --line:#DBDED7;
+    --text:#3A3E39;
+    --text-mute:#7C8079;
   }
   *{box-sizing:border-box;}
   body{
@@ -258,32 +258,6 @@
   }
   .modal{position:relative;}
 
-  /* Multi-select dropdown */
-  .multiselect{position:relative;}
-  .ms-summary{
-    display:flex;align-items:center;justify-content:space-between;
-    width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:3px;
-    font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;background:var(--paper);
-    cursor:pointer;color:var(--text);
-  }
-  .ms-summary::after{content:'▾';color:var(--text-mute);font-size:11px;margin-left:8px;}
-  .ms-summary-label{color:var(--text-mute);}
-  .ms-summary-label.has-value{color:var(--text);}
-  .ms-panel{
-    display:none;
-    position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:10;
-    background:var(--paper-raised);border:1.5px solid var(--ink);border-radius:3px;
-    max-height:220px;overflow-y:auto;padding:6px 0;
-    box-shadow:0 6px 16px rgba(20,33,61,.15);
-  }
-  .multiselect.open .ms-panel{display:block;}
-  .ms-option{
-    display:flex;align-items:center;gap:8px;
-    padding:8px 12px;font-size:13px;cursor:pointer;
-  }
-  .ms-option:hover{background:var(--teal-dim);}
-  .ms-option input{margin:0;accent-color:var(--teal);cursor:pointer;}
-
   .toast{
     position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
     background:var(--ink);color:var(--paper);padding:10px 20px;border-radius:3px;
@@ -320,7 +294,7 @@
     <input type="text" id="searchInput" placeholder="Search by tool, organization, or country…">
     <select id="filterCategory"><option value="">All subcategories</option></select>
     <select id="filterAction"><option value="">All biosecurity actions</option></select>
-    <button class="btn" id="addToolBtn">+ Add tool</button>
+    <button class="btn" id="addToolBtn">+ Suggest a tool</button>
   </div>
 
   <div class="registry" id="registry">
@@ -345,66 +319,24 @@
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal">
     <button class="close-x" id="closeModal">&times;</button>
-    <h2>Add a tool</h2>
-    <p class="modal-sub">Entries are saved to this registry and will still be here next time you open this page.</p>
+    <h2>Suggest a tool</h2>
+    <p class="modal-sub">This opens your email app with the details below, addressed to the registry maintainer for review.</p>
     <form id="addForm">
       <div class="field">
         <label>Tool name *</label>
         <input type="text" id="f_tool_name" required>
       </div>
-      <div class="two-col">
-        <div class="field">
-          <label>Date (MM/YYYY)</label>
-          <input type="text" id="f_date" placeholder="06/2026">
-        </div>
-        <div class="field">
-          <label>Countries</label>
-          <input type="text" id="f_countries" placeholder="USA, UK">
-        </div>
+      <div class="field">
+        <label>Description *</label>
+        <textarea id="f_description" required placeholder="What does it do, and why should it be tracked here?" style="min-height:90px;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;"></textarea>
       </div>
       <div class="field">
-        <label>Organization(s)</label>
-        <input type="text" id="f_organization" placeholder="e.g. Anthropic, OpenAI">
-      </div>
-      <div class="field">
-        <label>Link(s)</label>
-        <textarea id="f_links" placeholder="One URL per line"></textarea>
-      </div>
-      <div class="two-col">
-        <div class="field">
-          <label>User interaction</label>
-          <div class="multiselect" id="ms_interaction" data-field-name="User interaction"></div>
-        </div>
-        <div class="field">
-          <label>Paywall</label>
-          <select id="f_paywall">
-            <option value="">Select…</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-            <option value="No, but free trial available">No, but free trial available</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label>Access management</label>
-        <div class="multiselect" id="ms_access_management" data-field-name="Access management"></div>
-      </div>
-      <div class="field">
-        <label>Tool subcategories</label>
-        <div class="multiselect" id="ms_tool_subcategories" data-field-name="Tool subcategories"></div>
-      </div>
-      <div class="field">
-        <label>Biosecurity actions</label>
-        <div class="multiselect" id="ms_biosecurity_actions" data-field-name="Biosecurity actions"></div>
-      </div>
-      <div class="field">
-        <label>Information hazards</label>
-        <input type="text" id="f_information_hazards" placeholder="NA, or note the concern">
-        <div class="field-hint">Only flag if a specific hazard is present.</div>
+        <label>Link *</label>
+        <input type="text" id="f_link" required placeholder="https://…">
       </div>
       <div class="modal-actions">
         <button type="button" class="btn secondary" id="cancelAdd">Cancel</button>
-        <button type="submit" class="btn">Save tool</button>
+        <button type="submit" class="btn">Send suggestion</button>
       </div>
     </form>
   </div>
@@ -434,21 +366,10 @@ function linksToHtml(links){
   }).join('<br>');
 }
 
-async function loadTools(){
-  let stored = [];
-  try{
-    const raw = localStorage.getItem('biosecurity_registry_tools');
-    if(raw) stored = JSON.parse(raw);
-  }catch(e){ console.log('No stored tools yet', e); }
-  tools = [...SEED_DATA, ...stored];
+function loadTools(){
+  tools = [...SEED_DATA];
   populateFilters();
   render();
-}
-
-function saveStoredTools(){
-  const seedNames = new Set(SEED_DATA.map(t => t.tool_name));
-  const userAdded = tools.filter(t => !seedNames.has(t.tool_name));
-  localStorage.setItem('biosecurity_registry_tools', JSON.stringify(userAdded));
 }
 
 function populateFilters(){
@@ -550,129 +471,28 @@ document.getElementById('searchInput').addEventListener('input', render);
 document.getElementById('filterCategory').addEventListener('change', render);
 document.getElementById('filterAction').addEventListener('change', render);
 
-// ----- Multi-select dropdown component -----
-const MULTISELECT_OPTIONS = {
-  ms_interaction: ['Local Execution', 'API Access', 'Secure Server', 'Not Reported'],
-  ms_access_management: ['Authentication', 'Open Weights', 'Open Source'],
-  ms_tool_subcategories: [
-    'Protein design tools',
-    'Small biomolecule design tools',
-    'Pathogen property prediction',
-    'Host-pathogen interaction prediction tools',
-    'Viral vector design tools',
-    'Immunological system modelling',
-    'Experimental design/simulation and autonomous tools'
-  ],
-  ms_biosecurity_actions: [
-    'Statement acknowledging dual-use risk',
-    'Expert engagement',
-    'Curation of training data',
-    'Evaluation for dual-use risk',
-    'Adoption and/or development of governance frameworks',
-    'Community consultations',
-    'Provision of recommendations',
-    'Publication of evaluation tests and/or results'
-  ]
-};
-
-function buildMultiselect(containerId, options){
-  const container = document.getElementById(containerId);
-  const fieldName = container.dataset.fieldName || 'options';
-  container.innerHTML = `
-    <button type="button" class="ms-summary">
-      <span class="ms-summary-label">Select ${fieldName.toLowerCase()}…</span>
-    </button>
-    <div class="ms-panel">
-      ${options.map((opt, i) => `
-        <label class="ms-option">
-          <input type="checkbox" value="${escapeHtml(opt)}" data-ms="${containerId}">
-          <span>${escapeHtml(opt)}</span>
-        </label>
-      `).join('')}
-    </div>
-  `;
-  const summaryBtn = container.querySelector('.ms-summary');
-  summaryBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isOpen = container.classList.contains('open');
-    document.querySelectorAll('.multiselect.open').forEach(m => m.classList.remove('open'));
-    if(!isOpen) container.classList.add('open');
-  });
-  container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', () => updateMultiselectSummary(containerId));
-  });
-}
-
-function updateMultiselectSummary(containerId){
-  const container = document.getElementById(containerId);
-  const fieldName = container.dataset.fieldName || 'options';
-  const checked = [...container.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
-  const label = container.querySelector('.ms-summary-label');
-  if(checked.length){
-    label.textContent = checked.length <= 2 ? checked.join(', ') : `${checked.length} selected`;
-    label.classList.add('has-value');
-  }else{
-    label.textContent = `Select ${fieldName.toLowerCase()}…`;
-    label.classList.remove('has-value');
-  }
-}
-
-function getMultiselectValue(containerId){
-  const container = document.getElementById(containerId);
-  return [...container.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value).join(', ');
-}
-
-function resetMultiselect(containerId){
-  const container = document.getElementById(containerId);
-  container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-  updateMultiselectSummary(containerId);
-}
-
-document.addEventListener('click', (e) => {
-  if(!e.target.closest('.multiselect')){
-    document.querySelectorAll('.multiselect.open').forEach(m => m.classList.remove('open'));
-  }
-});
-
-Object.entries(MULTISELECT_OPTIONS).forEach(([id, opts]) => buildMultiselect(id, opts));
-
 // Modal
+const RECIPIENT_EMAIL = 'sydneyoshuster@gmail.com';
 const backdrop = document.getElementById('modalBackdrop');
 document.getElementById('addToolBtn').addEventListener('click', () => backdrop.classList.add('open'));
 document.getElementById('closeModal').addEventListener('click', () => backdrop.classList.remove('open'));
 document.getElementById('cancelAdd').addEventListener('click', () => backdrop.classList.remove('open'));
 backdrop.addEventListener('click', (e) => { if(e.target === backdrop) backdrop.classList.remove('open'); });
 
-document.getElementById('addForm').addEventListener('submit', async (e) => {
+document.getElementById('addForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  const newTool = {
-    tool_name: document.getElementById('f_tool_name').value.trim(),
-    date: document.getElementById('f_date').value.trim(),
-    countries: document.getElementById('f_countries').value.trim(),
-    organization: document.getElementById('f_organization').value.trim(),
-    links: document.getElementById('f_links').value.trim(),
-    interaction: getMultiselectValue('ms_interaction'),
-    paywall: document.getElementById('f_paywall').value.trim(),
-    access_management: getMultiselectValue('ms_access_management'),
-    tool_subcategories: getMultiselectValue('ms_tool_subcategories'),
-    biosecurity_actions: getMultiselectValue('ms_biosecurity_actions'),
-    information_hazards: document.getElementById('f_information_hazards').value.trim(),
-  };
-  if(!newTool.tool_name){ return; }
+  const toolName = document.getElementById('f_tool_name').value.trim();
+  const description = document.getElementById('f_description').value.trim();
+  const link = document.getElementById('f_link').value.trim();
+  if(!toolName || !description || !link){ return; }
 
-  tools.push(newTool);
-  try{
-    saveStoredTools();
-    showToast('Saved "' + newTool.tool_name + '"');
-  }catch(err){
-    showToast('Could not save — added for this session only');
-    console.error(err);
-  }
+  const subject = `Tool suggestion: ${toolName}`;
+  const body = `Tool name: ${toolName}\n\nDescription: ${description}\n\nLink: ${link}`;
+  const mailtoUrl = `mailto:${RECIPIENT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailtoUrl;
 
-  populateFilters();
-  render();
+  showToast('Opening your email app…');
   e.target.reset();
-  Object.keys(MULTISELECT_OPTIONS).forEach(resetMultiselect);
   backdrop.classList.remove('open');
 });
 
